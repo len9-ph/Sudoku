@@ -1,3 +1,4 @@
+import java.util.LinkedList;
 import java.util.Random;
 import java.lang.Math;
 
@@ -57,12 +58,10 @@ public class Puzzle {
         while(firstArea == secondArea)
             secondArea = r.nextInt((int) Math.sqrt(BOARD_SIZE));
 
-        for(int i = firstArea * 3; i < i + 2; i++) {
-            for (int j = 0; j < BOARD_SIZE; j++) {
-                int temp = puzzle[i][j];
-                puzzle[i][j] = puzzle[(secondArea * 3 + i - firstArea * 3)][j];
-                puzzle[secondArea * 3 + i - firstArea * 3][j] = temp;
-            }
+        for (int i = firstArea * 3, j = secondArea * 3 ; i < i + 2; i++, j++) {
+            int[] temp = puzzle[i];
+            puzzle[i] = puzzle[j];
+            puzzle[j] = temp;
         }
     }
 
@@ -73,12 +72,8 @@ public class Puzzle {
     }
 
     public void mixBoard() {
-        toTranspose();
-        swapColumns();
-        swapRows();
-        swapColumnsArea();
-        toTranspose();
-        swapRows();
+        Random r  = new Random();
+
     }
 
     public void print() {
