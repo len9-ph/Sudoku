@@ -18,6 +18,7 @@ public class Puzzle {
             for(int j = 0; j < BOARD_SIZE; j++) {
                 this.puzzle[i][j] = (i * 3 + i/3 + j) % 9 + 1;
             }
+        mixBoard();
     }
 
     private void toTranspose(){
@@ -30,10 +31,10 @@ public class Puzzle {
 
     private void swapRows() {
         Random r = new Random();
-        int firstLine = r.nextInt(BOARD_SIZE) + 1;
-        int secondLine = r.nextInt(BOARD_SIZE) + 1;
+        int firstLine = r.nextInt(BOARD_SIZE);
+        int secondLine = r.nextInt(BOARD_SIZE);
         while(firstLine == secondLine)
-            secondLine = r.nextInt(BOARD_SIZE) + 1;
+            secondLine = r.nextInt(BOARD_SIZE);
 
         //int[] tempRow = new int[BOARD_SIZE];
         for (int i = 0; i < BOARD_SIZE; i++) {
@@ -51,12 +52,33 @@ public class Puzzle {
 
     private void swapRowsArea() {
         Random r = new Random();
-        int firstArea = r.nextInt((int) Math.sqrt(BOARD_SIZE)) + 1;
-        int secondArea = r.nextInt((int) Math.sqrt(BOARD_SIZE)) + 1;
+        int firstArea = r.nextInt((int) Math.sqrt(BOARD_SIZE));
+        int secondArea = r.nextInt((int) Math.sqrt(BOARD_SIZE));
         while(firstArea == secondArea)
-            secondArea = r.nextInt((int) Math.sqrt(BOARD_SIZE)) + 1;
-        
+            secondArea = r.nextInt((int) Math.sqrt(BOARD_SIZE));
 
+        for(int i = firstArea * 3; i < i + 2; i++) {
+            for (int j = 0; j < BOARD_SIZE; j++) {
+                int temp = puzzle[i][j];
+                puzzle[i][j] = puzzle[(secondArea * 3 + i - firstArea * 3)][j];
+                puzzle[secondArea * 3 + i - firstArea * 3][j] = temp;
+            }
+        }
+    }
+
+    private void swapColumnsArea() {
+        toTranspose();
+        swapRowsArea();
+        toTranspose();
+    }
+
+    public void mixBoard() {
+        toTranspose();
+        swapColumns();
+        swapRows();
+        swapColumnsArea();
+        toTranspose();
+        swapRows();
     }
 
     public void print() {
