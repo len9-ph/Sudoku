@@ -19,8 +19,6 @@ public class Puzzle {
             for(int j = 0; j < BOARD_SIZE; j++) {
                 this.puzzle[i][j] = (i * 3 + i/3 + j) % 9 + 1;
             }
-        print();
-        System.out.println();
         mixBoard();
     }
 
@@ -35,17 +33,15 @@ public class Puzzle {
     //Remake
     Shuffle swapRows = () -> {
         Random r = new Random();
-        int firstLine = r.nextInt(BOARD_SIZE);
-        int secondLine = r.nextInt(BOARD_SIZE);
+        int area = r.nextInt((int) Math.sqrt(BOARD_SIZE));
+        int firstLine = r.nextInt((int) Math.sqrt(BOARD_SIZE));
+        int secondLine = r.nextInt((int) Math.sqrt(BOARD_SIZE));
         while(firstLine == secondLine)
-            secondLine = r.nextInt(BOARD_SIZE);
+            secondLine = r.nextInt((int) Math.sqrt(BOARD_SIZE));
 
-        //int[] tempRow = new int[BOARD_SIZE];
-        for (int i = 0; i < BOARD_SIZE; i++) {
-            int temp = puzzle[firstLine][i];
-            puzzle[firstLine][i] = puzzle[secondLine][i];
-            puzzle[secondLine][i] = temp;
-        }
+        int[] temp = puzzle[firstLine + area * 3];
+        puzzle[firstLine + area * 3] = puzzle[secondLine + area * 3];
+        puzzle[secondLine + area * 3] = temp;
     };
 
     Shuffle swapColumns = () -> {
