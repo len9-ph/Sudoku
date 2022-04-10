@@ -1,3 +1,3 @@
 public interface Shuffle {
-    void shuffleBoard(Puzzle puzzle);
+    void shuffleBoard();
 }
