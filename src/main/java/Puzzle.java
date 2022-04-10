@@ -20,13 +20,18 @@ public class Puzzle {
                 this.puzzle[i][j] = (i * 3 + i/3 + j) % 9 + 1;
             }
         mixBoard();
+        //print();
+        //System.out.println();
     }
 
     Shuffle toTranspose = () -> {
-        int[][] temp = puzzle;
         for(int i = 0; i < BOARD_SIZE; i++)
-            for(int j = 0; j < BOARD_SIZE; j++) {
-                this.puzzle[j][i] = temp[i][j];
+            for(int j = i ; j < BOARD_SIZE; j++) {
+                if (i != j)  {
+                    int temp = puzzle[i][j];
+                    puzzle[i][j] = puzzle[j][i];
+                    puzzle[j][i] = temp;
+                }
             }
     };
 
@@ -74,7 +79,7 @@ public class Puzzle {
     public void mixBoard() {
         Random r = new Random();
         int k = r.nextInt(10) + 10;
-        Shuffle[] mixFunctions = {toTranspose, swapRows, swapColumns, swapRowsArea, swapColumnsArea };
+        Shuffle[] mixFunctions = {toTranspose, swapRows, swapColumns, swapRowsArea, swapColumnsArea};
         for (int i = 0; i < k; i++){
             mixFunctions[r.nextInt(mixFunctions.length)].shuffleBoard();
         }
@@ -86,5 +91,10 @@ public class Puzzle {
                 System.out.print(this.puzzle[i][j] + "  ");
             System.out.println();
         }
+    }
+
+    public void test(){
+        swapColumns.shuffleBoard();
+        print();
     }
 }
