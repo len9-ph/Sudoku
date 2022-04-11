@@ -1,4 +1,3 @@
-import java.util.LinkedList;
 import java.util.Random;
 import java.lang.Math;
 
@@ -20,8 +19,6 @@ public class Puzzle {
                 this.puzzle[i][j] = (i * 3 + i/3 + j) % 9 + 1;
             }
         mixBoard();
-        //print();
-        //System.out.println();
     }
 
     Shuffle toTranspose = () -> {
@@ -35,7 +32,6 @@ public class Puzzle {
             }
     };
 
-    //Remake
     Shuffle swapRows = () -> {
         Random r = new Random();
         int area = r.nextInt((int) Math.sqrt(BOARD_SIZE));
@@ -62,10 +58,12 @@ public class Puzzle {
         while(firstArea == secondArea)
             secondArea = r.nextInt((int) Math.sqrt(BOARD_SIZE));
 
-        for (int i = firstArea * 3, j = secondArea * 3 ; i < firstArea * 3 + 2 & j < secondArea * 3 + 2; i++, j++) {
-            int[] temp = puzzle[i];
-            puzzle[i] = puzzle[j];
-            puzzle[j] = temp;
+        int[] temp;
+
+        for (int i = 0; i < (int) Math.sqrt(BOARD_SIZE); i++){
+            temp = puzzle[firstArea * 3 + i];
+            puzzle[firstArea * 3 + i] = puzzle[secondArea * 3 + i];
+            puzzle[secondArea * 3 + i] = temp;
         }
     };
 
@@ -80,9 +78,8 @@ public class Puzzle {
         Random r = new Random();
         int k = r.nextInt(10) + 10;
         Shuffle[] mixFunctions = {toTranspose, swapRows, swapColumns, swapRowsArea, swapColumnsArea};
-        for (int i = 0; i < k; i++){
+        for (int i = 0; i < k; i++)
             mixFunctions[r.nextInt(mixFunctions.length)].shuffleBoard();
-        }
     }
 
     public void print() {
@@ -93,8 +90,4 @@ public class Puzzle {
         }
     }
 
-    public void test(){
-        swapColumns.shuffleBoard();
-        print();
-    }
 }
