@@ -21,6 +21,9 @@ public class Puzzle {
         mixBoard();
     }
 
+    /**
+     *  This method transpose game board
+     */
     Shuffle toTranspose = () -> {
         for(int i = 0; i < BOARD_SIZE; i++)
             for(int j = i ; j < BOARD_SIZE; j++) {
@@ -32,6 +35,9 @@ public class Puzzle {
             }
     };
 
+    /**
+     * This method swap two rows in one area
+     */
     Shuffle swapRows = () -> {
         Random r = new Random();
         int area = r.nextInt((int) Math.sqrt(BOARD_SIZE));
@@ -45,12 +51,18 @@ public class Puzzle {
         puzzle[secondLine + area * 3] = temp;
     };
 
+    /**
+     * This method swap two columns in one area
+     */
     Shuffle swapColumns = () -> {
         toTranspose.shuffleBoard();
         swapRows.shuffleBoard();
         toTranspose.shuffleBoard();
     };
 
+    /**
+     * This method change two rows area
+     */
     Shuffle swapRowsArea = () -> {
         Random r = new Random();
         int firstArea = r.nextInt((int) Math.sqrt(BOARD_SIZE));
@@ -67,13 +79,18 @@ public class Puzzle {
         }
     };
 
+    /**
+     * This method swap two columns area
+     */
     Shuffle swapColumnsArea = () -> {
         toTranspose.shuffleBoard();
         swapRowsArea.shuffleBoard();
         toTranspose.shuffleBoard();
     };
 
-
+    /**
+     * This method mix board by using shuffle functions
+     */
     public void mixBoard() {
         Random r = new Random();
         int k = r.nextInt(10) + 10;
