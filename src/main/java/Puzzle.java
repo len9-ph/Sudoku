@@ -3,22 +3,34 @@ import java.lang.Math;
 
 /**
  * This class represents puzzle that will be generated for game
+ * (I implement this class using singleton pattern)
  */
 public final class Puzzle {
     public static final int BOARD_SIZE = 9;
 
     public int[][] puzzle;
 
+    private static Puzzle INSTANCE;
+
     /**
-     * Constructor that create simple board
+     * Constructor that create game board
      */
-    public Puzzle() {
+    private Puzzle() {
         puzzle = new int[9][9];
         for(int i = 0; i < BOARD_SIZE; i++)
             for(int j = 0; j < BOARD_SIZE; j++) {
                 this.puzzle[i][j] = (i * 3 + i/3 + j) % 9 + 1;
             }
         mixBoard();
+    }
+
+    /**
+     * @return
+     */
+    public static Puzzle getInstance() {
+        if (INSTANCE == null)
+            INSTANCE = new Puzzle();
+        return INSTANCE;
     }
 
     /**
@@ -98,6 +110,8 @@ public final class Puzzle {
         for (int i = 0; i < k; i++)
             mixFunctions[r.nextInt(mixFunctions.length)].shuffleBoard();
     }
+
+
 
     public void print() {
         for(int i = 0; i < BOARD_SIZE; i++) {
