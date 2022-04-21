@@ -4,7 +4,7 @@ import java.lang.Math;
 /**
  * This class represents puzzle that will be generated for game
  */
-public class Puzzle {
+public final class Puzzle {
     public static final int BOARD_SIZE = 9;
 
     public int[][] puzzle;
@@ -24,7 +24,7 @@ public class Puzzle {
     /**
      *  This method transpose game board
      */
-    Shuffle toTranspose = () -> {
+    private final Shuffle toTranspose = () -> {
         for(int i = 0; i < BOARD_SIZE; i++)
             for(int j = i ; j < BOARD_SIZE; j++) {
                 if (i != j)  {
@@ -38,7 +38,7 @@ public class Puzzle {
     /**
      * This method swap two rows in one area
      */
-    Shuffle swapRows = () -> {
+    private final Shuffle swapRows = () -> {
         Random r = new Random();
         int area = r.nextInt((int) Math.sqrt(BOARD_SIZE));
         int firstLine = r.nextInt((int) Math.sqrt(BOARD_SIZE));
@@ -54,7 +54,7 @@ public class Puzzle {
     /**
      * This method swap two columns in one area
      */
-    Shuffle swapColumns = () -> {
+    private final Shuffle swapColumns = () -> {
         toTranspose.shuffleBoard();
         swapRows.shuffleBoard();
         toTranspose.shuffleBoard();
@@ -63,7 +63,7 @@ public class Puzzle {
     /**
      * This method change two rows area
      */
-    Shuffle swapRowsArea = () -> {
+    private final Shuffle swapRowsArea = () -> {
         Random r = new Random();
         int firstArea = r.nextInt((int) Math.sqrt(BOARD_SIZE));
         int secondArea = r.nextInt((int) Math.sqrt(BOARD_SIZE));
@@ -82,7 +82,7 @@ public class Puzzle {
     /**
      * This method swap two columns area
      */
-    Shuffle swapColumnsArea = () -> {
+    private final Shuffle swapColumnsArea = () -> {
         toTranspose.shuffleBoard();
         swapRowsArea.shuffleBoard();
         toTranspose.shuffleBoard();
