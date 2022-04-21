@@ -5,11 +5,11 @@ import java.lang.Math;
  */
 public class Solver {
     /**
-     * @param board
-     * @param row
-     * @param col
-     * @param num
-     * @return
+     * @param board - game board 9 x 9
+     * @param row - num of row
+     * @param col - num of column
+     * @param num - number
+     * @return - true if this combination safe, otherwise false
      */
     public static boolean isSafe(int[][] board, int row, int col, int num) {
         for (int d = 0; d < board.length; d++)
