@@ -25,7 +25,7 @@ public final class Puzzle {
     }
 
     /**
-     * @return
+     * @return - instance of the class
      */
     public static Puzzle getInstance() {
         if (INSTANCE == null)
@@ -111,8 +111,40 @@ public final class Puzzle {
             mixFunctions[r.nextInt(mixFunctions.length)].shuffleBoard();
     }
 
+    public void hideCells() {
+        boolean[][] floor = new boolean[BOARD_SIZE][BOARD_SIZE];
+        for (int i = 0; i < BOARD_SIZE; i++)
+            for (int j = 0; j < BOARD_SIZE; j++)
+                floor[i][j] = false;
+
+        int difficult = BOARD_SIZE * BOARD_SIZE;
+        Random r = new Random();
+        for (int it = 0; it < BOARD_SIZE * BOARD_SIZE; it++) {
+            int i = r.nextInt(BOARD_SIZE * BOARD_SIZE);
+            int j = r.nextInt(BOARD_SIZE * BOARD_SIZE);
+
+            if (!floor[i][j]) {
+                floor[i][j] = true;
+
+                int temp = puzzle[i][j];
+                puzzle[i][j] = 0;
+                difficult -= 1;
+
+                int[][] table_solution = new int[BOARD_SIZE][BOARD_SIZE];
+                for (int x = 0; x < BOARD_SIZE; x++)
+                    for (int y = 0; y < BOARD_SIZE; y++)
+                        table_solution[x][y] = puzzle[x][y];
+                if(!Solver.solveSudoku(table_solution))
+                    difficult += 1;
+            }
+
+        }
+    }
 
 
+    /**
+     * Delete before publication
+     */
     public void print() {
         for(int i = 0; i < BOARD_SIZE; i++) {
             for (int j = 0; j < BOARD_SIZE; j++)

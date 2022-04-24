@@ -11,7 +11,7 @@ public class Solver {
      * @param num - number
      * @return - true if this combination safe, otherwise false
      */
-    public static boolean isSafe(int[][] board, int row, int col, int num) {
+    private static boolean isSafe(int[][] board, int row, int col, int num) {
         for (int d = 0; d < board.length; d++)
             if (board[row][d] == num)
                 return false;
