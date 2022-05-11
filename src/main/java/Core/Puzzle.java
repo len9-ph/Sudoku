@@ -1,3 +1,5 @@
+package Core;
+
 import java.util.Random;
 import java.lang.Math;
 
@@ -9,7 +11,7 @@ public final class Puzzle {
     public static final int BOARD_SIZE = 9;
 
     private int[][] puzzle;
-    private boolean[][] isHidden;
+    private final boolean[][] isHidden;
 
     private static Puzzle INSTANCE;
 
@@ -172,6 +174,13 @@ public final class Puzzle {
                 System.out.print(this.puzzle[i][j] + "  ");
             System.out.println();
         }
+        System.out.println();
+        for(int i = 0; i < BOARD_SIZE; i++) {
+            for (int j = 0; j < BOARD_SIZE; j++)
+                System.out.print(this.isHidden[i][j] + "  ");
+            System.out.println();
+        }
+
     }
 
 }
