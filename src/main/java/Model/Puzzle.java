@@ -1,5 +1,6 @@
-package Core;
+package Model;
 
+import java.util.Observable;
 import java.util.Random;
 import java.lang.Math;
 
@@ -10,31 +11,40 @@ import java.lang.Math;
 public final class Puzzle {
     public static final int BOARD_SIZE = 9;
 
-    private int[][] puzzle;
-    private final boolean[][] isHidden;
-
+    private int[][] solution;
+    private boolean[][] isHidden;
+    //private int [][] game;
+    //private boolean[][] check;
     private static Puzzle INSTANCE;
 
     /**
      * Constructor that create game board
      */
     private Puzzle() {
-        puzzle = new int[BOARD_SIZE][BOARD_SIZE];
+        newGame();
+    }
+
+    public void newGame() {
+        solution = new int[BOARD_SIZE][BOARD_SIZE];
         isHidden = new boolean[BOARD_SIZE][BOARD_SIZE];
         for(int i = 0; i < BOARD_SIZE; i++)
             for(int j = 0; j < BOARD_SIZE; j++) {
-                this.puzzle[i][j] = (i * 3 + i/3 + j) % 9 + 1;
+                this.solution[i][j] = (i * 3 + i/3 + j) % 9 + 1;
                 this.isHidden[i][j] = false;
             }
         mixBoard();
         hideCells();
     }
 
+    public void checkGame() {
+
+    }
+
     /**
      * @return array BOARD_SIZE x BOARD_SIZE which illustrate game board
      */
-    public int[][] getPuzzle() {
-        return puzzle;
+    public int[][] getSolution() {
+        return solution;
     }
 
     /**
@@ -60,9 +70,9 @@ public final class Puzzle {
         for(int i = 0; i < BOARD_SIZE; i++)
             for(int j = i ; j < BOARD_SIZE; j++) {
                 if (i != j)  {
-                    int temp = puzzle[i][j];
-                    puzzle[i][j] = puzzle[j][i];
-                    puzzle[j][i] = temp;
+                    int temp = solution[i][j];
+                    solution[i][j] = solution[j][i];
+                    solution[j][i] = temp;
                 }
             }
     };
@@ -78,9 +88,9 @@ public final class Puzzle {
         while(firstLine == secondLine)
             secondLine = r.nextInt((int) Math.sqrt(BOARD_SIZE));
 
-        int[] temp = puzzle[firstLine + area * 3];
-        puzzle[firstLine + area * 3] = puzzle[secondLine + area * 3];
-        puzzle[secondLine + area * 3] = temp;
+        int[] temp = solution[firstLine + area * 3];
+        solution[firstLine + area * 3] = solution[secondLine + area * 3];
+        solution[secondLine + area * 3] = temp;
     };
 
     /**
@@ -105,9 +115,9 @@ public final class Puzzle {
         int[] temp;
 
         for (int i = 0; i < (int) Math.sqrt(BOARD_SIZE); i++){
-            temp = puzzle[firstArea * 3 + i];
-            puzzle[firstArea * 3 + i] = puzzle[secondArea * 3 + i];
-            puzzle[secondArea * 3 + i] = temp;
+            temp = solution[firstArea * 3 + i];
+            solution[firstArea * 3 + i] = solution[secondArea * 3 + i];
+            solution[secondArea * 3 + i] = temp;
         }
     };
 
@@ -137,7 +147,6 @@ public final class Puzzle {
             for (int j = 0; j < BOARD_SIZE; j++)
                 floor[i][j] = false;
 
-        int difficult = BOARD_SIZE * BOARD_SIZE;
         Random r = new Random();
         for (int it = 0; it < BOARD_SIZE * BOARD_SIZE; it++) {
             int i = r.nextInt(BOARD_SIZE);
@@ -146,17 +155,13 @@ public final class Puzzle {
             if (!floor[i][j]) {
                 floor[i][j] = true;
 
-                //int temp = puzzle[i][j];
-                //puzzle[i][j] = 0;
                 isHidden[i][j] = true;
-                difficult -= 1;
 
                 int[][] table_solution = new int[BOARD_SIZE][BOARD_SIZE];
                 for (int x = 0; x < BOARD_SIZE; x++)
                     for (int y = 0; y < BOARD_SIZE; y++)
-                        table_solution[x][y] = puzzle[x][y];
+                        table_solution[x][y] = solution[x][y];
                 if(!Solver.solveSudoku(table_solution)){
-                    difficult += 1;
                     isHidden[i][j] = false;
                 }
             }
@@ -166,21 +171,18 @@ public final class Puzzle {
 
 
     /**
+     * print to console function used to debug
      * Delete before publication
      */
     public void print() {
         for(int i = 0; i < BOARD_SIZE; i++) {
             for (int j = 0; j < BOARD_SIZE; j++)
-                System.out.print(this.puzzle[i][j] + "  ");
+                if(isHidden[i][j])
+                    System.out.print(0 + "  ");
+                else
+                    System.out.print(this.solution[i][j] + "  ");
             System.out.println();
         }
-        System.out.println();
-        for(int i = 0; i < BOARD_SIZE; i++) {
-            for (int j = 0; j < BOARD_SIZE; j++)
-                System.out.print(this.isHidden[i][j] + "  ");
-            System.out.println();
-        }
-
     }
 
 }
