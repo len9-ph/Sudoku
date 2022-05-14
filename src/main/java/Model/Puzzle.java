@@ -13,7 +13,7 @@ public final class Puzzle {
 
     private int[][] solution;
     private boolean[][] isHidden;
-    //private int [][] game;
+    private int [][] game; //Board for player
     //private boolean[][] check;
     private static Puzzle INSTANCE;
 
@@ -27,13 +27,21 @@ public final class Puzzle {
     public void newGame() {
         solution = new int[BOARD_SIZE][BOARD_SIZE];
         isHidden = new boolean[BOARD_SIZE][BOARD_SIZE];
+        game = new int [BOARD_SIZE][BOARD_SIZE];
         for(int i = 0; i < BOARD_SIZE; i++)
             for(int j = 0; j < BOARD_SIZE; j++) {
                 this.solution[i][j] = (i * 3 + i/3 + j) % 9 + 1;
                 this.isHidden[i][j] = false;
             }
-        mixBoard();
-        hideCells();
+        generateSolution();
+        generateGame();
+        for(int i = 0; i < BOARD_SIZE; i++)
+            for(int j = 0; j < BOARD_SIZE; j++) {
+                if (isHidden[i][j])
+                    game[i][j] = 0;
+                else
+                    game[i][j] = solution[i][j];
+            }
     }
 
     public void checkGame() {
@@ -132,16 +140,17 @@ public final class Puzzle {
 
     /**
      * This method mix board by using shuffle functions
+     * Generate solution
      */
-    public void mixBoard() {
+    public void generateSolution() {
         Random r = new Random();
-        int k = r.nextInt(10) + 10;
+        int k = r.nextInt(20) + 10;
         Shuffle[] mixFunctions = {toTranspose, swapRows, swapColumns, swapRowsArea, swapColumnsArea};
         for (int i = 0; i < k; i++)
             mixFunctions[r.nextInt(mixFunctions.length)].shuffleBoard();
     }
 
-    public void hideCells() {
+    public void generateGame() {
         boolean[][] floor = new boolean[BOARD_SIZE][BOARD_SIZE];
         for (int i = 0; i < BOARD_SIZE; i++)
             for (int j = 0; j < BOARD_SIZE; j++)
@@ -161,11 +170,10 @@ public final class Puzzle {
                 for (int x = 0; x < BOARD_SIZE; x++)
                     for (int y = 0; y < BOARD_SIZE; y++)
                         table_solution[x][y] = solution[x][y];
-                if(!Solver.solveSudoku(table_solution)){
+                if (!Solver.solveSudoku(table_solution)) {
                     isHidden[i][j] = false;
                 }
             }
-
         }
     }
 
